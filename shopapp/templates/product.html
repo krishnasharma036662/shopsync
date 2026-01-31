@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product - ShopSync</title>
+    <link rel="stylesheet" href="{% static 'shopapp/css/style.css' %}">
+</head>
+<body class="dark">
+
+<header class="navbar">
+    <div style="display:flex;align-items:center;gap:20px;">
+        <div class="logo">
+            <a href="/" style="color:inherit;text-decoration:none;">⚡ ShopSync</a>
+        </div>
+
+        <!-- NAV BUTTONS -->
+        <a href="/" class="nav-btn" title="Home">⌂</a>
+        <a href="/search/" class="nav-btn" title="Search">🔍</a>
+        <a href="/logout/" class="nav-btn" title="Logout">⎋</a>
+    </div>
+
+    <button id="themeToggle" class="theme-btn">🌙</button>
+</header>
+
+<main class="product-page">
+
+<h1 id="product-title">Loading…</h1>
+
+<div class="product-grid">
+    <div class="left-column">
+
+        <section class="card">
+            <h3>Price Comparison</h3>
+            <div id="comparison-list"></div>
+        </section>
+
+        <section class="card">
+            <h3>Price History</h3>
+            <div class="history-placeholder">
+                Price trend will appear here
+            </div>
+        </section>
+
+    </div>
+
+    <div class="right-column">
+
+        <section class="card">
+            <h3>AI Review Summary</h3>
+
+            <strong>Pros</strong>
+            <ul id="pros-list"></ul>
+
+            <strong>Cons</strong>
+            <ul id="cons-list"></ul>
+
+            <strong>Verdict</strong>
+            <p id="ai-verdict" class="muted">—</p>
+        </section>
+
+        <button class="primary-btn">Track Price Drop</button>
+
+    </div>
+</div>
+
+</main>
+
+<script>
+const productId = {{ product_id }};
+</script>
+<script src="{% static 'shopapp/js/main.js' %}"></script>
+
+</body>
+</html>

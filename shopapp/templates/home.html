@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ShopSync</title>
+    <link rel="stylesheet" href="{% static 'shopapp/css/style.css' %}">
+</head>
+<body class="dark">
+
+<header class="navbar">
+    <div class="logo">⚡ ShopSync</div>
+
+    <div class="nav-actions">
+        <button id="themeToggle" class="icon-btn" title="Toggle theme">🌙</button>
+        <a href="/logout/" class="icon-btn" title="Logout">⎋</a>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Compare Prices, Effortlessly.</h1>
+    <p>AI powered price & review comparison</p>
+
+    <form class="search-box" action="/search/" method="get">
+        <input type="text" name="q" required placeholder="Search for products">
+        <button type="submit">Search</button>
+    </form>
+</section>
+
+<section class="trending">
+    <h2>Trending Products</h2>
+    <div class="card-container" id="trending-container"></div>
+</section>
+
+<script src="{% static 'shopapp/js/main.js' %}"></script>
+
+<script>
+const container = document.getElementById("trending-container");
+container.innerHTML = "<p>Loading…</p>";
+
+fetch("/api/trending/")
+    .then(res => res.json())
+    .then(products => {
+        container.innerHTML = "";
+        products.forEach(p => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `<h3>${p.title}</h3>`;
+            card.onclick = () => {
+                window.location.href = `/product/${p.id}/`;
+            };
+            container.appendChild(card);
+        });
+    });
+</script>
+
+</body>
+</html>
