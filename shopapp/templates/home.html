@@ -1,18 +1,204 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>ShopSync</title>
-    <link rel="stylesheet" href="{% static 'shopapp/css/style.css' %}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ShopSync – Compare Prices</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #14141c, #050507);
+            color: #fff;
+        }
+
+        /* ---------- NAVBAR ---------- */
+        .navbar {
+            padding: 24px 60px;
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .icon-btn {
+            background: #1f1f2e;
+            border: none;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* ---------- HERO ---------- */
+        .hero {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            margin-top: 10px;
+            color: #9ca3af;
+            font-size: 16px;
+        }
+
+        /* ---------- SEARCH ---------- */
+        .search-box {
+            margin: 40px auto;
+            width: 60%;
+            background: linear-gradient(180deg, #1b1b26, #12121a);
+            border-radius: 14px;
+            display: flex;
+            padding: 6px;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .search-box input::placeholder {
+            color: #9ca3af;
+        }
+
+        .search-box button {
+            background: linear-gradient(180deg, #2c2c3e, #1f1f2e);
+            border: none;
+            color: #fff;
+            padding: 12px 26px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        /* ---------- FEATURES ---------- */
+        .features {
+            margin: 30px auto;
+            width: 70%;
+            display: flex;
+            justify-content: space-between;
+            color: #e5e7eb;
+        }
+
+        /* ---------- TRENDING ---------- */
+        .section {
+            padding: 60px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .card {
+            background: linear-gradient(180deg, #1b1b26, #0e0e15);
+            border-radius: 18px;
+            padding: 22px;
+            height: 380px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .price {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .price del {
+            color: #6b7280;
+        }
+
+        @media (max-width: 900px) {
+            .search-box { width: 85%; }
+            .products { grid-template-columns: 1fr; }
+            .features { flex-direction: column; gap: 20px; }
+        }
+
+        /* ---------- LIGHT THEME ---------- */
+        body.light {
+            background: #f5f5f5;
+            color: #000;
+        }
+
+        body.light .icon-btn {
+            background: #e5e5e5;
+            color: #000;
+        }
+
+        body.light .card {
+            background: #ffffff;
+        }
+
+        body.light .features {
+            color: #444;
+        }
+
+        /* ===== FINAL FIX: CHROME AUTOFILL OVERRIDE ===== */
+        .hero .search-box input:-webkit-autofill,
+        .hero .search-box input:-webkit-autofill:hover,
+        .hero .search-box input:-webkit-autofill:focus,
+        .hero .search-box input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #12121a inset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            caret-color: #ffffff;
+            transition: background-color 9999s ease-in-out 0s;
+        }
+
+    </style>
 </head>
-<body class="dark">
+
+<body>
 
 <header class="navbar">
-    <div class="logo">⚡ ShopSync</div>
-
+    <div>⚡ ShopSync</div>
     <div class="nav-actions">
-        <button id="themeToggle" class="icon-btn" title="Toggle theme">🌙</button>
-        <a href="/logout/" class="icon-btn" title="Logout">⎋</a>
+        <button id="themeToggle" class="icon-btn">🌙</button>
+        <a href="/logout/" class="icon-btn">⎋</a>
     </div>
 </header>
 
@@ -21,37 +207,23 @@
     <p>AI powered price & review comparison</p>
 
     <form class="search-box" action="/search/" method="get">
-        <input type="text" name="q" required placeholder="Search for products">
+        <input type="text" name="q" required placeholder="Search for products or paste the link....">
         <button type="submit">Search</button>
     </form>
 </section>
 
-<section class="trending">
+<div class="features">
+    <div>🧠 AI Review Summaries</div>
+    <div>🔔 Price Alerts</div>
+    <div>📊 Price Tracking</div>
+</div>
+
+<section class="section">
     <h2>Trending Products</h2>
-    <div class="card-container" id="trending-container"></div>
+    <div class="products" id="trending-container"></div>
 </section>
 
 <script src="{% static 'shopapp/js/main.js' %}"></script>
-
-<script>
-const container = document.getElementById("trending-container");
-container.innerHTML = "<p>Loading…</p>";
-
-fetch("/api/trending/")
-    .then(res => res.json())
-    .then(products => {
-        container.innerHTML = "";
-        products.forEach(p => {
-            const card = document.createElement("div");
-            card.className = "card";
-            card.innerHTML = `<h3>${p.title}</h3>`;
-            card.onclick = () => {
-                window.location.href = `/product/${p.id}/`;
-            };
-            container.appendChild(card);
-        });
-    });
-</script>
 
 </body>
 </html>

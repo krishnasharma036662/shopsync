@@ -1,18 +1,11 @@
 from django.urls import path
-from .api_views import (
-    trending,
-    search_api,
-    compare,
-    insights,
-    price_trend,
-    redirect_to_store,
-)
+from . import api_views
 
 urlpatterns = [
-    path("trending/", trending),
-    path("search/", search_api),
-    path("compare/<int:product_id>/", compare),
-    path("insights/<int:product_id>/", insights),
-    path("trend/<int:product_id>/", price_trend),
-    path("redirect/<int:listing_id>/", redirect_to_store),
+    path("trending/", api_views.trending),
+    path("search/", api_views.search_api),
+    path("compare/<int:product_id>/", api_views.compare),
+    path("price-trend/<int:product_id>/", api_views.price_trend),
+    path("insights/<int:product_id>/", api_views.insights),
+    path("redirect/<int:listing_id>/", api_views.redirect_to_store),
 ]

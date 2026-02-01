@@ -1,74 +1,316 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Product - ShopSync</title>
-    <link rel="stylesheet" href="{% static 'shopapp/css/style.css' %}">
+    <meta charset="UTF-8">
+    <title>ShopSync – Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #14141c, #050507);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        body.light {
+            background: #f5f5f5;
+            color: #000;
+        }
+
+        /* ================= HEADER ================= */
+        .header {
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            font-size: 22px;
+            font-weight: 700;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .back-btn {
+            background: #1f1f2e;
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: #1f1f2e;
+            border: none;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        body.light .icon-btn {
+            background: #e5e5e5;
+            color: #000;
+        }
+
+        /* ================= LAYOUT ================= */
+        .container {
+            padding: 20px 40px 60px;
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 30px;
+        }
+
+        /* ================= LEFT ================= */
+        .product-card {
+            background: linear-gradient(180deg, #1b1b26, #0e0e15);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        body.light .product-card {
+            background: #ffffff;
+        }
+
+        .product-header {
+            display: flex;
+            gap: 24px;
+        }
+
+        .product-image {
+            width: 220px;
+            height: 220px;
+            background: #0f0f14;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.light .product-image {
+            background: #f0f0f0;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .product-info h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .rating {
+            color: #facc15;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        /* ================= AI REVIEW ================= */
+        .ai-box {
+            margin-top: 24px;
+            background: #12121a;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        body.light .ai-box {
+            background: #f3f3f3;
+        }
+
+        .ai-title {
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .ai-section {
+            margin-bottom: 14px;
+        }
+
+        .ai-section-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .ai-section ul {
+            padding-left: 18px;
+        }
+
+        .ai-section li {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        /* ================= RIGHT ================= */
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .side-box {
+            background: linear-gradient(180deg, #1b1b26, #0e0e15);
+            border-radius: 18px;
+            padding: 20px;
+        }
+
+        body.light .side-box {
+            background: #ffffff;
+        }
+
+        .deal-score {
+            font-size: 28px;
+            font-weight: 700;
+            color: #facc15;
+        }
+
+        body.light .deal-score {
+            color: #2563eb;
+        }
+
+        /* ================= PRICE COMPARISON ================= */
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+            align-items: center;
+        }
+
+        body.light .compare-row {
+            border-color: #ddd;
+        }
+
+        .compare-row a {
+            background: #2563eb;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* ================= CHART ================= */
+        .chart-box {
+            margin: 0 40px 60px;
+            background: linear-gradient(180deg, #1b1b26, #0e0e15);
+            border-radius: 18px;
+            padding: 24px;
+        }
+
+        body.light .chart-box {
+            background: #ffffff;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .product-header {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+        }
+    </style>
 </head>
-<body class="dark">
 
-<header class="navbar">
-    <div style="display:flex;align-items:center;gap:20px;">
-        <div class="logo">
-            <a href="/" style="color:inherit;text-decoration:none;">⚡ ShopSync</a>
-        </div>
+<body>
 
-        <!-- NAV BUTTONS -->
-        <a href="/" class="nav-btn" title="Home">⌂</a>
-        <a href="/search/" class="nav-btn" title="Search">🔍</a>
-        <a href="/logout/" class="nav-btn" title="Logout">⎋</a>
-    </div>
-
-    <button id="themeToggle" class="theme-btn">🌙</button>
-</header>
-
-<main class="product-page">
-
-<h1 id="product-title">Loading…</h1>
-
-<div class="product-grid">
-    <div class="left-column">
-
-        <section class="card">
-            <h3>Price Comparison</h3>
-            <div id="comparison-list"></div>
-        </section>
-
-        <section class="card">
-            <h3>Price History</h3>
-            <div class="history-placeholder">
-                Price trend will appear here
-            </div>
-        </section>
-
-    </div>
-
-    <div class="right-column">
-
-        <section class="card">
-            <h3>AI Review Summary</h3>
-
-            <strong>Pros</strong>
-            <ul id="pros-list"></ul>
-
-            <strong>Cons</strong>
-            <ul id="cons-list"></ul>
-
-            <strong>Verdict</strong>
-            <p id="ai-verdict" class="muted">—</p>
-        </section>
-
-        <button class="primary-btn">Track Price Drop</button>
-
+<!-- HEADER -->
+<div class="header">
+    <div class="logo"><a href="/">⚡ ShopSync</a></div>
+    <div class="actions">
+        <a href="javascript:history.back()" class="back-btn">Back</a>
     </div>
 </div>
 
-</main>
+<!-- MAIN -->
+<div class="container">
+
+    <!-- LEFT -->
+    <div class="product-card">
+        <div class="product-header">
+            <div class="product-image">
+                <img id="product-image" src="" alt="">
+            </div>
+            <div class="product-info">
+                <h1 id="product-title">Product Name</h1>
+                <div class="rating"></div>
+            </div>
+        </div>
+
+        <!-- AI REVIEW -->
+        <div class="ai-box">
+            <div class="ai-title">AI Review Summary</div>
+
+            <div class="ai-section">
+                <div class="ai-section-title">Pros</div>
+                <ul id="pros-list"></ul>
+            </div>
+
+            <div class="ai-section">
+                <div class="ai-section-title">Cons</div>
+                <ul id="cons-list"></ul>
+            </div>
+
+            <div class="ai-section">
+                <div class="ai-section-title">Verdict</div>
+                <p id="ai-verdict"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="side-panel">
+
+        <div class="side-box">
+            <div>Deal Score</div>
+            <div class="deal-score"></div>
+            <div>Best time to buy: <strong class="best-time"></strong></div>
+        </div>
+
+        <div class="side-box">
+            <h3>Price Comparison</h3>
+            <div id="comparison-list"></div>
+        </div>
+    </div>
+</div>
+
+<!-- PRICE HISTORY -->
+<div class="chart-box">
+    <h3>Price History</h3>
+    <canvas id="priceChart" height="100"></canvas>
+</div>
 
 <script>
-const productId = {{ product_id }};
+    const productId = {{ product_id }};
 </script>
-<script src="{% static 'shopapp/js/main.js' %}"></script>
 
+<script src="{% static 'shopapp/js/main.js' %}"></script>
 </body>
 </html>

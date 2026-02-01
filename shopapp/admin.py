@@ -1,44 +1,37 @@
 from django.contrib import admin
-from .models import (
-    Product,
-    Platform,
-    ProductListing,
-    PriceHistory,
-    AIInsight,
-    UserPreference,
-)
+from .models import Product, Platform, ProductListing, PriceHistory, AIInsight
+from .services.openai_review_engine import generate_ai_review
+
+
+@admin.action(description="Regenerate AI Review")
+def regenerate_ai_review(modeladmin, request, queryset):
+    for product in queryset:
+        listings = ProductListing.objects.filter(product=product)
+        if not listings.exists():
+            continue
+
+        ai_data = generate_ai_review(product, listings)
+
+        AIInsight.objects.update_or_create(
+            product=product,
+            defaults={
+                "pros": ai_data["pros"],
+                "cons": ai_data["cons"],
+                "verdict": ai_data["verdict"],
+            }
+        )
+
+        product.rating = ai_data["rating"]
+        product.save(update_fields=["rating"])
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "rating")
-    search_fields = ("title",)
+    list_display = ("title", "rating")
+    actions = [regenerate_ai_review]
 
 
-@admin.register(Platform)
-class PlatformAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
-    search_fields = ("name",)
-
-
-@admin.register(ProductListing)
-class ProductListingAdmin(admin.ModelAdmin):
-    list_display = ("product", "platform", "price", "last_updated")
-    list_filter = ("platform",)
-    search_fields = ("product__title",)
-
-
-@admin.register(PriceHistory)
-class PriceHistoryAdmin(admin.ModelAdmin):
-    list_display = ("product", "price", "date")
-    list_filter = ("date",)
-
-
-@admin.register(AIInsight)
-class AIInsightAdmin(admin.ModelAdmin):
-    list_display = ("product", "verdict")
-
-
-@admin.register(UserPreference)
-class UserPreferenceAdmin(admin.ModelAdmin):
-    list_display = ("user", "theme")
+admin.site.register(Platform)
+admin.site.register(ProductListing)
+admin.site.register(PriceHistory)
+admin.site.register(AIInsight)
