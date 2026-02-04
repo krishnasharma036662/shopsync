@@ -51,3 +51,5 @@ User logs in to the system:-
 
 ShopSync combines real-time price comparison with AI-powered analysis to provide a smarter and more efficient online shopping experience.
 
+👤 Author - Krishna Sharma
+
